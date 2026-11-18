@@ -1,6 +1,7 @@
 package trainings
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -17,7 +18,7 @@ type Training struct {
 	personaldata.Personal
 }
 
-func (t *Training) Parse(datastring string) (err error) {
+func (t *Training) Parse(datastring string) error {
 	s := strings.Split(datastring, ",")
 	if len(s) != 3 {
 		return fmt.Errorf("incorrect data format: %s", datastring)
@@ -29,15 +30,15 @@ func (t *Training) Parse(datastring string) (err error) {
 	if steps <= 0 {
 		return fmt.Errorf("steps is set incorrectly: %d", steps)
 	}
-	t.Steps = steps
-	t.TrainingType = s[1]
 	duration, err := time.ParseDuration(s[2])
 	if err != nil {
 		return fmt.Errorf("time is set incorrectly: %w", err)
 	}
 	if duration <= 0 {
-		return fmt.Errorf("time is set incorrectly: %s", s[2])
+		return errors.New("time is set incorrectly")
 	}
+	t.Steps = steps
+	t.TrainingType = s[1]
 	t.Duration = duration
 	return nil
 }

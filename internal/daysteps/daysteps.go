@@ -1,6 +1,7 @@
 package daysteps
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -16,7 +17,7 @@ type DaySteps struct {
 	personaldata.Personal
 }
 
-func (ds *DaySteps) Parse(datastring string) (err error) {
+func (ds *DaySteps) Parse(datastring string) error {
 	s := strings.Split(datastring, ",")
 	if len(s) != 2 {
 		return fmt.Errorf("incorrect data format: %s", datastring)
@@ -28,14 +29,14 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 	if steps <= 0 {
 		return fmt.Errorf("steps is set incorrectly: %d", steps)
 	}
-	ds.Steps = steps
 	duration, err := time.ParseDuration(s[1])
 	if err != nil {
 		return fmt.Errorf("time is set incorrectly: %w", err)
 	}
 	if duration <= 0 {
-		return fmt.Errorf("time is set incorrectly: %w", err)
+		return errors.New("time is set incorrectly")
 	}
+	ds.Steps = steps
 	ds.Duration = duration
 	return nil
 }

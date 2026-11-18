@@ -6,7 +6,7 @@ import (
 )
 
 type DataParser interface {
-	Parse(datastring string) (err error)
+	Parse(datastring string) error
 	ActionInfo() (string, error)
 }
 
