@@ -18,7 +18,7 @@ type Training struct {
 	personaldata.Personal
 }
 
-func (t *Training) Parse(datastring string) error {
+func (t *Training) Parse(datastring string) (err error) {
 	s := strings.Split(datastring, ",")
 	if len(s) != 3 {
 		return fmt.Errorf("incorrect data format: %s", datastring)
